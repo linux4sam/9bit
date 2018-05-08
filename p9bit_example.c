@@ -123,7 +123,7 @@ int main(int argc, char** argv)
 	// https://github.com/torvalds/linux/blob/master/Documentation/serial/serial-rs485.txt
 
 	/* Enable RS485 mode: */
-	rs485conf.flags |= SER_RS485_ENABLED;
+	rs485conf.flags = SER_RS485_ENABLED;
 
 	/* Set logical level for RTS pin equal to 1 when sending: */
 	rs485conf.flags |= SER_RS485_RTS_ON_SEND;
@@ -131,9 +131,9 @@ int main(int argc, char** argv)
 	/*rs485conf.flags &= ~(SER_RS485_RTS_ON_SEND);*/
 
 	/* Set logical level for RTS pin equal to 1 after sending: */
-	rs485conf.flags |= SER_RS485_RTS_AFTER_SEND;
+	/*rs485conf.flags |= SER_RS485_RTS_AFTER_SEND;*/
 	/* or, set logical level for RTS pin equal to 0 after sending: */
-	/*rs485conf.flags &= ~(SER_RS485_RTS_AFTER_SEND);*/
+	rs485conf.flags &= ~(SER_RS485_RTS_AFTER_SEND);
 
 	/* Set rts delay before send, if needed: */
 	/*rs485conf.delay_rts_before_send = ...;*/
