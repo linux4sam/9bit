@@ -86,9 +86,9 @@ custom interfaces.
 ## Global Userspace Solution
 
 It is possible to essentually perform 9-bit emulation from userspace without any
-kernel modification and this functionally works as expected.  However, do to the
-extra calls between bytes, it can introduce an inter-byte delay that may not
-be desirable.
+kernel modification and this functionally works as expected on almost any UART
+that supports parity.  However, do to the extra calls between the address byte
+and the data byte, this can induce a long delay that may not be desirable.
 
 **TX Address Byte**
 
@@ -108,3 +108,10 @@ be desirable.
     tcsetattr(fd, TCSANOW, &term);
     ...
     read(fd, buffer, size);
+
+**Example Messages**
+
+There is about a 28 millisecond delay between the address byte and the data
+bytes of the message.
+
+![inter_message_delay](doc/message_inter_byte_gap.png)
