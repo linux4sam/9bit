@@ -1,4 +1,6 @@
-# SAMA5 9-bit Serial Mode
+![Microchip](doc/microchip_logo.png)
+
+# SAMA5 9-bit / Multidrop Serial Mode
 
 This repositories contains some examples to work with and evaluate 9-bit UART
 solutions on Microchip SAMA5 processors.  Some processors support hardware 9-bit
@@ -24,7 +26,7 @@ This will generate several example binaries.
 * Custom kernel patch must be applied to driver to support SENDA term bit.
 * This method provides a way to use the SENDA bit of the UART (only available on
   FLEXCOM UART on SAMA5D2).
-* The originl patches are available at:
+* The original patches are available at:
   <https://www.spinics.net/lists/linux-serial/msg25997.html>
 * Provides a method to use hardware driven RTS in RS485 mode on SAMA5D2.
 
@@ -70,9 +72,10 @@ DMA can be disabled for all ports in the kernel config.
 
 **Example Messages**
 
-Inter-byte delay is miniml and there is no difference between 9-bit high and
-9-bit low bytes.  The following shows the 9<sup>th</sup> bit is set high on the first
-message and following byts in the message have the 9<sup>th</sup> bit set low.
+Inter-byte delay is minimal and there is no timing difference between 9-bit high
+and 9-bit low bytes.  The following shows the 9<sup>th</sup> bit is set high on
+the first message and following bytes in the message have the 9<sup>th</sup> bit
+set low.
 
 ![message](doc/message.png)
 
@@ -85,29 +88,33 @@ custom interfaces.
 
 ## Global Userspace Solution
 
-It is possible to essentually perform 9-bit emulation from userspace without any
+It is possible to essentially perform 9-bit emulation from userspace without any
 kernel modification and this functionally works as expected on almost any UART
 that supports parity.  However, do to the extra calls between the address byte
 and the data byte, this can induce a long delay that may not be desirable.
 
-**TX Address Byte**
+_TX Address Byte_
 
     term.c_cflag = PARENB | CMSPAR| PARODD;
     tcsetattr(fd,  TCSADRAIN, &term);
     write(fd, buffer, 1);
 
-**TX Data Bytes**
+_TX Data Bytes_
 
     term.c_cflag = PARENB | CMSPAR;
     tcsetattr(fd,  TCSADRAIN, &term);
     write(fd, buffer+1, size-1);
 
-**RX**
+_RX_
 
     term.c_iflag = INPCK | PARMRK;
     tcsetattr(fd, TCSANOW, &term);
     ...
     read(fd, buffer, size);
+
+**Example**
+
+    ./user_example /dev/ttyS2 20000
 
 **Example Messages**
 
