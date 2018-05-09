@@ -136,10 +136,10 @@ int main(int argc, char** argv)
 	rs485conf.flags &= ~(SER_RS485_RTS_AFTER_SEND);
 
 	/* Set rts delay before send, if needed: */
-	/*rs485conf.delay_rts_before_send = ...;*/
+	rs485conf.delay_rts_before_send = 0;
 
 	/* Set rts delay after send, if needed: */
-	/*rs485conf.delay_rts_after_send = ...;*/
+	rs485conf.delay_rts_after_send = 0;
 
 	/* Set this flag if you want to receive data even whilst sending data */
 	/*rs485conf.flags |= SER_RS485_RX_DURING_TX;*/
