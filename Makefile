@@ -10,15 +10,15 @@ LDFLAGS:=-static
 
 senda_example_objs = \
 	senda_example.o \
-	custom_baud.o
+	custom_termios2.o
 
 p9bit_example_objs = \
 	p9bit_example.o \
-	custom_baud.o
+	custom_termios2.o
 
 user_example_objs = \
 	user_example.o \
-	custom_baud.o
+	custom_termios2.o
 
 senda_example: $(senda_example_objs)
 	$(CC) $(senda_example_objs) $(CFLAGS) -o $@ $(LDFLAGS)

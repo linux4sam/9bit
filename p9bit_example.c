@@ -4,6 +4,7 @@
  *
  * Example to exercise P9BIT 9-bit tx UART support on SAMA5D2.
  */
+#include "custom_termios2.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <linux/serial.h>
@@ -26,14 +27,13 @@
 /**
  * Sends a message, but indicates the first byte should have the 9th bit set.
  */
-static int send_9bit_msg(int fd, struct termios* term, const char* buf, int size)
+static int send_9bit_msg(int fd, struct termios2* term, const char* buf, int size)
 {
 	int ret;
 
 	/* set the 9th bit on the first byte of the message */
 	term->c_cflag |= P9BIT;
-
-	ret = tcsetattr(fd, TCSADRAIN, term);
+	ret = tcsetattr2(fd, TCSADRAIN, term);
 	if (ret < 0) {
 		fprintf(stderr, "tcsetattr() failed: %s\n",
 			strerror(errno));
@@ -51,8 +51,6 @@ static int send_9bit_msg(int fd, struct termios* term, const char* buf, int size
 	return ret;
 }
 
-extern int set_custom_baud(int fd, int baud);
-
 static int quit = 0;
 static void signal_handler(int dummy)
 {
@@ -66,8 +64,8 @@ int main(int argc, char** argv)
 	char buf[MAX_MSG_SIZE];
 	int n = 0;
 	int fd;
-	struct termios old_termios;
-	struct termios new_termios;
+	struct termios2 old_termios;
+	struct termios2 new_termios;
 	struct serial_rs485 rs485conf;
 	const char* dev;
 	int baud;
@@ -88,7 +86,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	if (tcgetattr(fd, &old_termios)) {
+	if (tcgetattr2(fd, &old_termios)) {
 		fprintf(stderr, "tcgetattr() failed: %s\n",
 			strerror(errno));
 		return -1;
@@ -96,7 +94,11 @@ int main(int argc, char** argv)
 	memcpy(&new_termios, &old_termios, sizeof(new_termios));
 
 	new_termios.c_cflag = CS8 | CLOCAL;
-	/* new_termios.c_cflag |= CSTOPB; */   /* 2 stop bit */
+
+	new_termios.c_cflag &= ~CBAUD;
+	new_termios.c_cflag |= BOTHER;
+	new_termios.c_ispeed = baud;
+	new_termios.c_ospeed = baud;
 
 	new_termios.c_iflag = 0;
 	new_termios.c_oflag = 0;
@@ -104,18 +106,8 @@ int main(int argc, char** argv)
 
 	tcflush(fd, TCIOFLUSH);
 
-	if (tcsetattr(fd, TCSANOW, &new_termios)) {
+	if (tcsetattr2(fd, TCSANOW, &new_termios)) {
 		fprintf(stderr, "tcsetattr() failed: %s\n",
-			strerror(errno));
-		return -1;
-	}
-
-	/*
-	 * Didn't set a baud rate in tcsetattr() because we are going to use a
-	 * non-standard way of doing it.
-	 */
-	if (set_custom_baud(fd, baud)) {
-		fprintf(stderr, "set_custom_baud() failed: %s\n",
 			strerror(errno));
 		return -1;
 	}
@@ -166,7 +158,7 @@ int main(int argc, char** argv)
 	}
 
 	/* restore termios to original */
-	tcsetattr(fd, TCSANOW, &old_termios);
+	tcsetattr2(fd, TCSANOW, &old_termios);
 
 	return 0;
 }
