@@ -5,8 +5,8 @@
 
 all: senda_example p9bit_example user_example
 
-CFLAGS:=-Wall -g
-LDFLAGS:=-static
+CFLAGS ?= -Wall -g
+LDFLAGS ?= -static
 
 senda_example_objs = \
 	senda_example.o \
