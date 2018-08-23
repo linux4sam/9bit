@@ -25,12 +25,12 @@
 
 #ifndef PARMD
 #warning Your kernel does not appear to support PARMD. Will try anyway.
-#define PARMD   0100000
+#define PARMD   040000000
 #endif
 
 #ifndef SENDA
 #warning Your kernel does not appear to support SENDA. Will try anyway.
-#define SENDA   0200000
+#define SENDA   0100000000
 #endif
 
 /**
