@@ -21,7 +21,7 @@
 
 #ifndef P9BIT
 #warning Your kernel does not appear to support P9BIT termbit. Will try anyway.
-#define P9BIT   0400000
+#define P9BIT   0200000000
 #endif
 
 /**
