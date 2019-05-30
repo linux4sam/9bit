@@ -122,3 +122,8 @@ There is about a 28 millisecond delay between the address byte and the data
 bytes of the message.
 
 ![inter_message_delay](doc/message_inter_byte_gap.png)
+
+## License
+
+The example code is released under the terms of the `MIT` license. See the [COPYING](COPYING)
+file for more information.

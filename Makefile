@@ -1,6 +1,7 @@
 #
-# Copyright (C) 2018 Microchip Technology Inc.  All rights reserved.
-# Joshua Henderson <joshua.henderson@microchip.com>
+# Copyright (C) 2019 Microchip Technology Inc.  All rights reserved.
+#
+# SPDX-License-Identifier: MIT
 #
 
 all: senda_example p9bit_example user_example
