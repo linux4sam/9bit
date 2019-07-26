@@ -2,7 +2,7 @@
 
 # SAMA5 9-bit / Multidrop Serial Mode
 
-This repositories contains some examples to work with and evaluate 9-bit UART
+This repository contains some examples to work with and evaluate 9-bit UART
 solutions on Microchip SAMA5 processors.  Some processors support hardware 9-bit
 mode and features surrounding this mode, and some do not.  However, even in
 those cases it is still possible to make use of 9-bit mode.  In all cases, the
