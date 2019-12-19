@@ -5,6 +5,7 @@
  */
 #include "custom_termios2.h"
 #include <asm/ioctls.h>
+#include <asm-generic/ioctls.h>
 #include <errno.h>
 #include <sys/ioctl.h>
 
